@@ -1,0 +1,79 @@
+<% layout('./layouts/boilerplate') %>
+
+    <div class="row">
+        <div class="col-6">
+          <div id="rosterCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+              <% roster.images.forEach((img,i) => { %>
+              <div class="carousel-item <%= i === 0 ? 'active' : ''  %>">
+                <!--                        if first card add active class otherwise nothing -->
+                <img class="d-inline-block h-50" style="width: 300px" src="<%= img.url%>" alt="">
+              </div>
+              <% }) %>
+            </div>
+            <% if(roster.images.length > 1) { %>
+            <a class="carousel-control-prev" href="#rosterCarousel" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only"></span>
+            </a>
+            <a class="carousel-control-next" href="#rosterCarousel" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only"></span>
+            </a>
+            <% } %>
+          </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title"><%= roster.name %></h5>
+                  <p class="card-text"><%= roster.title %></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><%= roster.class %></li>
+                  <li class="list-group-item"><%= roster.height %> , <%= roster.weight %></li>
+                  <li class="list-group-item"><%= roster.hometown %></li>
+                </ul>
+                <% if(signedIn && roster.author.equals(signedIn._id)) { %>
+                  <!-- hides edit button if not signed in -->
+                <div class="card-body">
+                  <a class="card-link btn btn-info" href="/UNCroster/<%= roster._id %>/edit" >Edit Player</a>
+                  <form class="d-inline" action="/UNCroster/<%= roster._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+                </div>
+              <% } %>
+                <div class="card-footer text-muted">
+                    Healthy
+                </div>
+              </div>
+
+        </div>
+        <div class="col-6">
+          <% if(signedIn) { %>
+          <h2>Leave Your Scortching Takes</h2>
+              <form action="/UNCroster/<%=roster._id  %>/take" method="POST" class="mb-3 validated-form" novalidate>
+                <div class="mb-3">
+                  <label class="form-label" for="body">Hot Takes</label>
+                  <textarea class= "form-control" name="take[body]" id="body" cols="30" rows="2" required></textarea>
+                  <div class="valid-feedback">
+                    🔥🔥🔥
+                  </div>
+                </div>
+                <button class="btn btn-success">Submit</button>
+              </form>
+              <% } %>
+              <%  for( let hotTakes of roster.takes) {%>
+                <div class="card mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Hot Take:</h5>
+              <p class="card-text"><%= hotTakes.body %></p>
+              <h6 class="card-subtitle mb-2 text-muted">By <%= hotTakes.author.username  %></h6>
+              <% if(signedIn && hotTakes.author.equals(signedIn._id)) { %>
+              <form action="/UNCroster/<%=roster._id%>/take/<%=hotTakes._id%>?_method=DELETE" method="POST">
+              <button class="btn btn-sm btn-danger"> Delete</button>
+              </form>
+              <% } %>
+              </div>
+            </div>
+              <% } %>
+        </div>
+    </div>

@@ -1,0 +1,88 @@
+<% layout('./layouts/boilerplate') %>
+
+
+
+    <div class="row">
+        <div class="col-6">
+          <div id="map"></div>
+          <div id="prospectCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+              <% prospect.images.forEach((img,i) => { %>
+              <div class="carousel-item <%= i === 0 ? 'active' : ''  %>">
+                <!--                        if first card add active class otherwise nothing -->
+                <img crossorigin="anonymous" class="d-inline-block h-50" style="width: 300px" src="<%= img.url%>" alt="">
+              </div>
+              <% }) %>
+            </div>
+            <% if(prospect.images.length > 1) { %>
+            <a class="carousel-control-prev" href="#prospectCarousel" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only"></span>
+            </a>
+            <a class="carousel-control-next" href="#prospectCarousel" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only"></span>
+            </a>
+            <% } %>
+          </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title"><%= prospect.name %></h5>
+                  <p class="card-text"><%= prospect.title %></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><%= prospect.class %></li>
+                  <li class="list-group-item"><%= prospect.height %> , <%= prospect.weight %></li>
+                  <li class="list-group-item"><%= prospect.hometown %></li>
+                </ul>
+                <% if(signedIn && prospect.author.equals(signedIn._id)) { %>
+                  <!-- hides edit button if not signed in -->
+                <div class="card-body">
+                  <a class="card-link btn btn-info" href="/prospects/<%= prospect._id %>/edit" >Edit Player</a>
+                  <form class="d-inline" action="/prospect/<%= prospect._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+                </div>
+              <% } %>
+                <div class="card-footer text-muted">
+                    Healthy
+                </div>
+              </div>
+
+        </div>
+    <div class="col-6">
+      <% if(signedIn) { %>
+      <h2>Leave Your Scouting Report</h2>
+          <form action="/prospects/<%=prospect._id  %>/scout" method="POST" class="mb-3 validated-form" novalidate>
+            <div class="mb-3">
+              <label class="form-label" for="body">What do you think?</label>
+              <textarea class= "form-control" name="scout[body]" id="body" cols="30" rows="2" required></textarea>
+              <div class="valid-feedback">
+                🔥🔥🔥
+              </div>
+            </div>
+            <button class="btn btn-success">Submit</button>
+          </form>
+          <% } %>
+          <%  for( let scout of prospect.takes) {%>
+            <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Scouting Report:</h5>
+          <p class="card-text"><%= scout.body %></p>
+          <h6 class="card-subtitle mb-2 text-muted">By <%= scout.author.username  %></h6>
+          <% if(signedIn && scout.author.equals(signedIn._id)) { %>
+          <form action="/prospects/<%=prospect._id%>/scout/<%=scout._id%>?_method=DELETE" method="POST">
+          <button class="btn btn-sm btn-danger"> Delete</button>
+          </form>
+          <% } %>
+          </div>
+        </div>
+          <% } %>
+    </div>
+</div>
+
+    <script>
+      const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+      const prospect = <%- JSON.stringify(prospect) %>
+    </script>
+    <script src="/js/showPageMap.js"></script>

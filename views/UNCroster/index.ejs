@@ -1,0 +1,25 @@
+<% layout('./layouts/uncboilerplate') %>
+    <h1 >UNC Players</h1>
+        <% for(let roster of rosters) {%>
+           <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <% if(roster.images.length) {%>
+                    <img class="img-fluid" alt="" src="<%=roster.images[0].url%>">
+                    <% }else { %>
+                        <img class="img-fluid" alt="" src="https://res.cloudinary.com/dsm8iidf8/image/upload/v1680281044/qtfpa3lrfgqujqii6wn9.png">
+                        <% } %>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= roster.name %></h5>
+                        <p class="card-text"> <%=roster.title %> </p>
+                        <p class="card-text">
+                            <small class="text-muted"><%=roster.hometown %> </small>
+                        </p>
+                        <a class="btn btn-primary" href="/UNCroster/<%=roster._id%>"> View <%= roster.name%> </a>
+                    </div>
+                </div>
+            </div>
+           </div>
+            <% }%>

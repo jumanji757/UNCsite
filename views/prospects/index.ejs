@@ -1,0 +1,31 @@
+<% layout('./layouts/prosboilerplate') %>
+<div id="cluster-map"></div>
+<h1 >All Prospects</h1>
+    <% for(let prospect of prospects) {%>
+       <div class="card mb-3" >
+        <div class="row">
+            <div class="col-md-4">
+                <% if(prospect.images.length) {%>
+                <img class="imgindex" crossorigin="anonymous" alt="" src="<%=prospect.images[0].url%>">
+                  <% }else {%>
+                <img class="imgindex" crossorigin="anonymous" alt="" src="https://res.cloudinary.com/dsm8iidf8/image/upload/v1680281044/qtfpa3lrfgqujqii6wn9.png">
+                <% } %>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title"><%= prospect.name %></h5>
+                    <p class="card-text"> <%=prospect.title %> </p>
+                    <p class="card-text">
+                        <small class="text-muted"><%=prospect.hometown %> </small>
+                    </p>
+                    <a class="btn btn-primary" href="/prospects/<%=prospect._id%>"> View <%= prospect.name%> </a>
+                </div>
+            </div>
+        </div>
+       </div>
+        <% }%>
+        <script>
+            const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+            const prospects = {features: <%- JSON.stringify(prospects) %>}
+          </script>
+        <script src="/js/clusterMap.js"></script>
