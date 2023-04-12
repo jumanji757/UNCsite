@@ -6,9 +6,9 @@
         <div class="row">
             <div class="col-md-4">
                 <% if(prospect.images.length) {%>
-                <img class="imgindex" crossorigin="anonymous" alt="" src="<%=prospect.images[0].url%>">
+                <img class="img-fluid" crossorigin="anonymous" alt="" src="<%=prospect.images[0].url%>">
                   <% }else {%>
-                <img class="imgindex" crossorigin="anonymous" alt="" src="https://res.cloudinary.com/dsm8iidf8/image/upload/v1680281044/qtfpa3lrfgqujqii6wn9.png">
+                <img class="img-fluid" crossorigin="anonymous" alt="" src="https://res.cloudinary.com/dsm8iidf8/image/upload/v1680281044/qtfpa3lrfgqujqii6wn9.png">
                 <% } %>
             </div>
             <div class="col-md-8">
@@ -29,3 +29,6 @@
             const prospects = {features: <%- JSON.stringify(prospects) %>}
           </script>
         <script src="/js/clusterMap.js"></script>
+
+
+    
